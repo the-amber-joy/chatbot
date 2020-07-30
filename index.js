@@ -5,6 +5,8 @@ import covid from "./covid.js"
 
 const synth = window.speechSynthesis;
 const voiceSelect = document.getElementById("voiceSelect");
+const inputField = document.getElementById("input")
+const outputDiv = document.getElementById("output");
 let voiceOptions = {};
 let selectedVoice = null;
 
@@ -22,7 +24,6 @@ loadVoices().then(voices => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    const inputField = document.getElementById("input")
     inputField.addEventListener("keydown", function (e) {
         if (e.code === "Enter") {
             let input = inputField.value;
@@ -31,11 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
     voiceSelect.addEventListener('change', function () {
-        console.log("you selected", this.value.name)
-
         selectedVoice = voiceOptions[this.value];
-        console.log("type of selection", typeof selectedVoice);
-
     });
 });
 
@@ -54,7 +51,7 @@ function output(input) {
         .replace(/please /g, "")
         .replace(/ please/g, "");
 
-    // Searches for an exact match with the 'trigger' array, if there are none, it goes will check if message contains 'coronavirus,' and if not - random alternative
+    // Searches for an exact match with the 'trigger' array, if there are none, it goes will check if message contains 'covid/coronavirus,' and if not - random alternative
     if (compare(trigger, reply, text)) {
         response = compare(trigger, reply, text);
     } else if (text.match(/coronavirus/gi)) {
@@ -83,13 +80,12 @@ function compare(triggerArray, replyArray, string) {
 }
 
 function addChat(input, response) {
-    const outputDiv = document.getElementById("output");
-    let userDiv = document.createElement("div");
+    const userDiv = document.createElement("div");
     userDiv.id = "user";
     userDiv.innerHTML = `You: <span id="user-response">${input}</span>`;
     outputDiv.insertBefore(userDiv, document.getElementById("bot"))
 
-    let u = new SpeechSynthesisUtterance(response);
+    const u = new SpeechSynthesisUtterance(response);
     u.text = response;
     u.volume = 1;
     u.rate = 1;
@@ -99,7 +95,7 @@ function addChat(input, response) {
     const botName = selectedVoice.name;
     console.log("botname", botName)
 
-    let botDiv = document.createElement("div");
+    const botDiv = document.createElement("div");
     botDiv.id = "bot";
     botDiv.innerHTML = `${botName}: <span id="bot-response">${response}</span>`;
     outputDiv.insertBefore(botDiv, userDiv)
@@ -111,7 +107,6 @@ function loadVoices() {
     return new Promise(
         function (resolve, reject) {
             let id;
-
             id = setInterval(() => {
                 if (synth.getVoices().length !== 0) {
                     resolve(synth.getVoices().filter(voice => voice.lang.startsWith("en-")));
