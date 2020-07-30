@@ -7,6 +7,7 @@ const synth = window.speechSynthesis;
 const voiceSelect = document.getElementById("voiceSelect");
 const inputField = document.getElementById("input")
 const outputDiv = document.getElementById("output");
+let botName = "Alex";
 let voiceOptions = {};
 let selectedVoice = null;
 
@@ -33,6 +34,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     voiceSelect.addEventListener('change', function () {
         selectedVoice = voiceOptions[this.value];
+        let intro = ""
+        console.log("selected name", selectedVoice.name)
+        console.log("selected name startswith", selectedVoice.name.startsWith("Google"))
+        if (selectedVoice.name.startsWith("Google")) {
+            intro = "I don't have a name, I am a monstrosity forged in the bowels of Google. But you can call me Coach."
+            botName = "Coach"
+        } else {
+            intro = `Hello, my name is ${selectedVoice.name}`
+            botName = selectedVoice.name
+        }
+
+        const u = new SpeechSynthesisUtterance(intro);
+        u.volume = 1;
+        u.rate = 1;
+        u.pitch = 1;
+        u.voice = selectedVoice;
+        synth.speak(u)
     });
 });
 
@@ -91,9 +109,6 @@ function addChat(input, response) {
     u.rate = 1;
     u.pitch = 1;
     u.voice = selectedVoice;
-
-    const botName = selectedVoice.name;
-    console.log("botname", botName)
 
     const botDiv = document.createElement("div");
     botDiv.id = "bot";
