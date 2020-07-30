@@ -27,7 +27,7 @@ span {
 }
 #main {
     position: fixed;
-    top: 40%;
+    top: 20%;
     right: 200px;
     width: 400px;
     border: 0px solid #421;
@@ -41,8 +41,11 @@ span {
     border: 1px solid #421;
 }
 #output{
-  height: 40vh;
+  height: 60vh;
   overflow: auto;
   display: flex;
   flex-direction: column-reverse;
+}
+#voiceSelect {
+    color: #421;
 }
