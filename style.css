@@ -4,9 +4,8 @@ body {
     font-size: 18px;
     font-family: "Courier New";
     background: rgb(200, 232, 241);
-
-
 }
+
 body::after {
     content: "";
     background-image: url("./bot.png");
@@ -18,13 +17,16 @@ body::after {
     right: 0;
     position: absolute;
     z-index: -1;
-  }
+}
+
 span {
     color: rgb(36, 17, 119);
 }
+
 ::-webkit-input-placeholder {
     color: #711
 }
+
 #main {
     position: fixed;
     top: 20%;
@@ -33,19 +35,54 @@ span {
     border: 0px solid #421;
     padding: 40px;
 }
+
 #main div {
     margin: 10px;
 }
+
 #input {
     padding: 5px;
+    width: 250px;
     border: 1px solid #421;
 }
-#output{
-  height: 60vh;
-  overflow: auto;
-  display: flex;
-  flex-direction: column-reverse;
+
+#output {
+    height: 60vh;
+    width: 250px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column-reverse;
 }
+
 #voiceSelect {
     color: #421;
+}
+
+.wrapper {
+    display: grid;
+    grid-gap: 1px;
+    grid-template: 
+        "voice voice input input"
+        "rate rate output output"
+        "pitch pitch output output";
+}
+
+.voice {
+    grid-area: voice;
+}
+
+.rate {
+    grid-area: rate;
+}
+
+.input {
+    grid-area: input;
+}
+
+.pitch {
+    grid-area: pitch;
+}
+
+.output {
+    grid-area: output;
 }

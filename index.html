@@ -1,17 +1,47 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Chatbot</title>
-        <script type="module" src="index.js"></script>
-        <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
-        <div id="main">
-            <div><select id="voiceSelect"></select></div>
-            <div><input id="input" type="text" placeholder="Say something..." autocomplete="off"/></div>
-            <div id="output">
-                <div id="bot"></div>
+<head>
+    <title>Chatbot</title>
+    <script type="module" src="index.js"></script>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div id="main">
+        <div class="wrapper">
+            <div class="voice">
+                <select id="voiceSelect"></select>
+            </div>
+
+            <div class="rate">
+                <p>Rate:</p>
+                <input type="radio" id="slow" name="rate" value=0>
+                <label for="slow">Slow</label><br>
+                <input type="radio" id="medium" name="rate" value=1>
+                <label for="medium">Medium</label><br>
+                <input type="radio" id="fast" name="rate" value=2>
+                <label for="fast">Fast</label>
+            </div>
+
+            <div class="pitch">
+                <p>Pitch:</p>
+                <input type="radio" id="low" name="pitch" value=0>
+                <label for="low">Low</label><br>
+                <input type="radio" id="medium" name="pitch" value=1>
+                <label for="medium">Medium</label><br>
+                <input type="radio" id="high" name="pitch" value=2>
+                <label for="high">High</label>
+            </div>
+
+            <div class="input">
+                <input id="input" type="text" placeholder="Say something..." autocomplete="off" />
+            </div>
+
+            <div class="output">
+                <div id="output">
+                    <div id="bot"></div>
+                </div>
             </div>
         </div>
-    </body>
+    </div>
+</body>
 </html>

@@ -25,18 +25,16 @@ loadVoices().then(voices => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    inputField.addEventListener("keydown", function (e) {
+    inputField.addEventListener("keydown", function(e) {
         if (e.code === "Enter") {
             let input = inputField.value;
             inputField.value = "";
             output(input);
         }
     });
-    voiceSelect.addEventListener('change', function () {
+    voiceSelect.addEventListener('change', function() {
         selectedVoice = voiceOptions[this.value];
         let intro = ""
-        console.log("selected name", selectedVoice.name)
-        console.log("selected name startswith", selectedVoice.name.startsWith("Google"))
         if (selectedVoice.name.startsWith("Google")) {
             intro = "I don't have a name, I am a monstrosity forged in the bowels of Google. But you can call me Coach."
             botName = "Coach"
@@ -82,6 +80,8 @@ function output(input) {
 
     //update DOM
     addChat(input, response);
+    // copycat mode
+    // addChat(input, input);
 }
 
 function compare(triggerArray, replyArray, string) {
@@ -98,6 +98,7 @@ function compare(triggerArray, replyArray, string) {
 }
 
 function addChat(input, response) {
+    // Reply Mode (comment these 4 lines for copycat mode)
     const userDiv = document.createElement("div");
     userDiv.id = "user";
     userDiv.innerHTML = `You: <span id="user-response">${input}</span>`;
@@ -114,13 +115,15 @@ function addChat(input, response) {
     botDiv.id = "bot";
     botDiv.innerHTML = `${botName}: <span id="bot-response">${response}</span>`;
     outputDiv.insertBefore(botDiv, userDiv)
+    // copycat mode
+    // outputDiv.insertBefore(botDiv, document.getElementById("bot"))
 
     synth.speak(u);
 }
 
 function loadVoices() {
     return new Promise(
-        function (resolve, reject) {
+        function(resolve, reject) {
             let id;
             id = setInterval(() => {
                 if (synth.getVoices().length !== 0) {
