@@ -2,32 +2,54 @@ import trigger from "./trigger.js"
 import reply from "./reply.js"
 import alternative from "./alternative.js"
 import covid from "./covid.js"
+import isoLangs from "./isoLangs.js"
 
 const synth = window.speechSynthesis;
 const voiceSelect = document.getElementById("voiceSelect");
+const languageSelect = document.getElementById("languageSelect")
 const inputField = document.getElementById("input")
 const outputDiv = document.getElementById("output");
 const rateSelect = document.querySelector("form[name='rate']")
 const pitchSelect = document.querySelector("form[name='pitch']")
-const languageSelect = document.getElementById("languageSelect")
-let botName = "Alex";
+const defaultLang = "English"
+const voiceOptions = {};
 let selectedPitch = 1;
 let selectedRate = 1;
-let voiceOptions = {};
+let botName = "";
+let isGoogle = false;
 let selectedVoice = null;
 
-loadVoices().then(voices => {
-    selectedVoice = voices[0];
+getLanguages().then(languages => {
+    // trim countries from language codes
+    languages = languages.map(lang => {
+        const n = lang.indexOf('-');
+        lang = lang.substring(0, n != -1 ? n : lang.length);
+        return lang;
+    })
 
-    for (let i = 0; i < voices.length; i++) {
-        const name = voices[i].name
-        voiceOptions[name] = voices[i];
-        const option = document.createElement("option");
-        option.setAttribute("value", name);
-        option.text = name;
-        voiceSelect.appendChild(option);
-    }
-});
+    // Make a set to remove dupes, and convert back to array
+    const filteredLangs = Array.from(new Set(languages));
+
+    // Get language names, and sort the new collection
+    const langObjects = filteredLangs.map(lang => {
+        return { name: getLanguageName(lang), isoCode: lang };
+    }).sort((a, b) => (a.name > b.name) ? 1 : -1)
+
+    const languageOptions = {};
+    // Add to language options
+    langObjects.forEach((lang) => {
+        languageOptions[lang.isoCode] = lang;
+        const languageOption = document.createElement("option");
+        languageOption.setAttribute("value", lang.isoCode);
+        if (lang.name === defaultLang) {
+            languageOption.setAttribute("selected", true);
+            populateVoices(lang.isoCode)
+        }
+        languageOption.text = lang.name;
+        languageSelect.appendChild(languageOption);
+    })
+
+})
 
 document.addEventListener("DOMContentLoaded", () => {
     inputField.addEventListener("keydown", function (e) {
@@ -37,24 +59,16 @@ document.addEventListener("DOMContentLoaded", () => {
             output(input);
         }
     });
-    voiceSelect.addEventListener('change', function () {
-        selectedVoice = voiceOptions[this.value];
-        let intro = ""
-        if (selectedVoice.name.startsWith("Google")) {
-            intro = "I don't have a name, I am a monstrosity forged in the bowels of Google. But you can call me Coach."
-            botName = "Coach"
-        } else {
-            intro = `Hello, my name is ${selectedVoice.name}`
-            botName = selectedVoice.name
-        }
 
-        const u = new SpeechSynthesisUtterance(intro);
-        u.volume = 1;
-        u.rate = selectedRate;
-        u.pitch = selectedPitch;
-        u.voice = selectedVoice;
-        synth.speak(u)
+    voiceSelect.addEventListener('change', function () {
+        newGreeting(voiceOptions[this.value])
     });
+
+    languageSelect.addEventListener('change', function () {
+        const selectedLanguage = this.value;
+        populateVoices(selectedLanguage)
+    });
+
 
     rateSelect.addEventListener('click', () => {
         const rates = document.querySelectorAll("input[name='rate']")
@@ -62,6 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i = 0; i < rates.length; i++) {
             rates[i].onclick = () => {
                 selectedRate = rates[i].value;
+                voiceChange(rates[i].id)
             }
         }
     });
@@ -70,12 +85,67 @@ document.addEventListener("DOMContentLoaded", () => {
         const pitches = document.querySelectorAll("input[name='pitch']")
 
         for (let i = 0; i < pitches.length; i++) {
-            rates[i].onclick = () => {
+            pitches[i].onclick = () => {
                 selectedPitch = pitches[i].value;
+                voiceChange(pitches[i].id)
             }
         }
     });
 });
+
+function newGreeting(selectedVoice) {
+    const name = selectedVoice.name
+    isGoogle = name.startsWith("Google");
+
+    let intro = `Hello, my name is ${selectedVoice.name}`
+    let extra = isGoogle ? ", but you can call be Googlebot." : "."
+    botName = isGoogle ? "Googlebot" : selectedVoice.name
+
+    const u = new SpeechSynthesisUtterance(intro + extra)
+    u.volume = 1;
+    u.rate = selectedRate;
+    u.pitch = selectedPitch;
+    u.voice = selectedVoice
+    synth.speak(u)
+}
+
+function voiceChange(newProperty) {
+    let speech = `Now I am speaking with a ${newProperty} voice`
+
+    const u = new SpeechSynthesisUtterance(speech)
+    u.volume = 1;
+    u.rate = selectedRate;
+    u.pitch = selectedPitch;
+    u.voice = selectedVoice
+    synth.speak(u)
+}
+
+function getLanguageName(key) {
+    const lang = isoLangs[key];
+    return lang ? lang.name : undefined;
+}
+
+function populateVoices(isoCode) {
+    loadVoices(isoCode).then(voices => {
+        voiceSelect.querySelectorAll('*').forEach(n => n.remove());
+
+        selectedVoice = voices[0];
+
+        for (let i = 0; i < voices.length; i++) {
+            const name = voices[i].name
+
+            isGoogle = name.startsWith("Google");
+
+            voiceOptions[name] = voices[i];
+            const voiceOption = document.createElement("option");
+            voiceOption.setAttribute("value", name);
+            voiceOption.text = isGoogle ? `${name} (Googlebot)` : name;
+            voiceSelect.appendChild(voiceOption);
+        }
+
+        newGreeting(voiceOptions[selectedVoice.name])
+    });
+}
 
 function output(input) {
     let response;
@@ -146,14 +216,29 @@ function addChat(input, response) {
     synth.speak(u);
 }
 
-function loadVoices(language = "en") {
+function loadVoices(isoCode = "en") {
     return new Promise(
         function (resolve, reject) {
             let id;
             id = setInterval(() => {
                 if (synth.getVoices().length !== 0) {
-                    console.log(synth.getVoices(voice => voice.language))
-                    resolve(synth.getVoices().filter(voice => voice.lang.startsWith(`${language}-`)));
+                    resolve(synth.getVoices().filter(voice => voice.lang.startsWith(`${isoCode}`)));
+                    clearInterval(id);
+                }
+            }, 10);
+        }
+    )
+}
+
+function getLanguages() {
+    return new Promise(
+        function (resolve, reject) {
+            let id;
+            id = setInterval(() => {
+                if (synth.getVoices().length !== 0) {
+                    const languages = [];
+                    synth.getVoices().forEach(voice => languages.push(voice.lang))
+                    resolve(languages);
                     clearInterval(id);
                 }
             }, 10);
