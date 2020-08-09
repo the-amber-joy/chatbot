@@ -7,7 +7,12 @@ const synth = window.speechSynthesis;
 const voiceSelect = document.getElementById("voiceSelect");
 const inputField = document.getElementById("input")
 const outputDiv = document.getElementById("output");
+const rateSelect = document.querySelector("form[name='rate']")
+const pitchSelect = document.querySelector("form[name='pitch']")
+const languageSelect = document.getElementById("languageSelect")
 let botName = "Alex";
+let selectedPitch = 1;
+let selectedRate = 1;
 let voiceOptions = {};
 let selectedVoice = null;
 
@@ -25,14 +30,14 @@ loadVoices().then(voices => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    inputField.addEventListener("keydown", function(e) {
+    inputField.addEventListener("keydown", function (e) {
         if (e.code === "Enter") {
             let input = inputField.value;
             inputField.value = "";
             output(input);
         }
     });
-    voiceSelect.addEventListener('change', function() {
+    voiceSelect.addEventListener('change', function () {
         selectedVoice = voiceOptions[this.value];
         let intro = ""
         if (selectedVoice.name.startsWith("Google")) {
@@ -45,10 +50,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const u = new SpeechSynthesisUtterance(intro);
         u.volume = 1;
-        u.rate = 1;
-        u.pitch = 1;
+        u.rate = selectedRate;
+        u.pitch = selectedPitch;
         u.voice = selectedVoice;
         synth.speak(u)
+    });
+
+    rateSelect.addEventListener('click', () => {
+        const rates = document.querySelectorAll("input[name='rate']")
+
+        for (let i = 0; i < rates.length; i++) {
+            rates[i].onclick = () => {
+                selectedRate = rates[i].value;
+            }
+        }
+    });
+
+    pitchSelect.addEventListener('click', () => {
+        const pitches = document.querySelectorAll("input[name='pitch']")
+
+        for (let i = 0; i < pitches.length; i++) {
+            rates[i].onclick = () => {
+                selectedPitch = pitches[i].value;
+            }
+        }
     });
 });
 
@@ -107,8 +132,8 @@ function addChat(input, response) {
     const u = new SpeechSynthesisUtterance(response);
     u.text = response;
     u.volume = 1;
-    u.rate = 1;
-    u.pitch = 1;
+    u.rate = selectedRate;
+    u.pitch = selectedPitch;
     u.voice = selectedVoice;
 
     const botDiv = document.createElement("div");
@@ -121,13 +146,14 @@ function addChat(input, response) {
     synth.speak(u);
 }
 
-function loadVoices() {
+function loadVoices(language = "en") {
     return new Promise(
-        function(resolve, reject) {
+        function (resolve, reject) {
             let id;
             id = setInterval(() => {
                 if (synth.getVoices().length !== 0) {
-                    resolve(synth.getVoices().filter(voice => voice.lang.startsWith("en-")));
+                    console.log(synth.getVoices(voice => voice.language))
+                    resolve(synth.getVoices().filter(voice => voice.lang.startsWith(`${language}-`)));
                     clearInterval(id);
                 }
             }, 10);

@@ -61,10 +61,15 @@ span {
 .wrapper {
     display: grid;
     grid-gap: 1px;
-    grid-template: 
-        "voice voice input input"
+    grid-template:
+        "language language input input"
+        "voice voice output output"
         "rate rate output output"
         "pitch pitch output output";
+}
+
+.language {
+    grid-area: language;
 }
 
 .voice {
