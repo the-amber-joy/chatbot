@@ -6,7 +6,6 @@ const trigger = [
     ["who are you", "are you human", "are you bot", "are you human or bot"],
     ["who created you", "who made you"],
     [
-        "your name please",
         "your name",
         "may i know your name",
         "what is your name",
