@@ -61,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     voiceSelect.addEventListener('change', function () {
+        selectedVoice = voiceOptions[this.value];
         newGreeting(voiceOptions[this.value])
     });
 
