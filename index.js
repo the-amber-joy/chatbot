@@ -52,6 +52,11 @@ document.addEventListener("DOMContentLoaded", () => {
         populateVoices(selectedLanguage).then(res => {
             voiceOptions = res.voiceOptions;
             selectedVoice = res.selectedVoice;
+            sayStuff({
+                voice: selectedVoice,
+                rate: selectedRate,
+                pitch: selectedPitch
+            })
         });
     });
 
