@@ -17,9 +17,9 @@ function compare(triggerArray, replyArray, string) {
 }
 
 function addChat(input, response, voiceProps) {
-    const {botName, voice, rate, pitch} = voiceProps;
+    const { botName, voice, rate, pitch } = voiceProps;
     const userDiv = document.createElement("div");
-    
+
     userDiv.id = "user";
     userDiv.innerHTML = `You: <span id="user-response">${input}</span>`;
     outputDiv.insertBefore(userDiv, document.getElementById("bot"))
@@ -37,31 +37,36 @@ function addChat(input, response, voiceProps) {
     })
 }
 
-export default function output(input, voiceProps) {
+export default function output(input, voiceProps, selectedMode) {
     let response;
 
-    //Transforms whatever the user inputs to lowercase and remove all chars except word characters, space, and digits
-    let text = input.toLowerCase().replace(/[^\w\s\d]/gi, "");
+    if (selectedMode === "chat") {
+        //Transforms whatever the user inputs to lowercase and remove all chars except word characters, space, and digits
+        let text = input.toLowerCase().replace(/[^\w\s\d]/gi, "");
 
-    // For example 'tell me a story' becomes 'tell me story'
-    // Or 'i feel happy' -> 'happy'
-    text = text
-        .replace(/ a /g, " ")
-        .replace(/i feel /g, "")
-        .replace(/whats/g, "what is")
-        .replace(/please /g, "")
-        .replace(/ please/g, "");
+        // For example 'tell me a story' becomes 'tell me story'
+        // Or 'i feel happy' -> 'happy'
+        text = text
+            .replace(/ a /g, " ")
+            .replace(/i feel /g, "")
+            .replace(/whats/g, "what is")
+            .replace(/please /g, "")
+            .replace(/ please/g, "");
 
-    // Searches for an exact match with the 'trigger' array, if there are none, it goes will check if message contains 'covid/coronavirus,' and if not - random alternative
-    if (compare(trigger, reply, text)) {
-        response = compare(trigger, reply, text);
-    } else if (text.match(/coronavirus/gi)) {
-        response = covid[Math.floor(Math.random() * covid.length)];
-    } else if (text.match(/covid/gi)) {
-        response = covid[Math.floor(Math.random() * covid.length)];
+        // Searches for an exact match with the 'trigger' array, if there are none, it goes will check if message contains 'covid/coronavirus,' and if not - random alternative
+        if (compare(trigger, reply, text)) {
+            response = compare(trigger, reply, text);
+        } else if (text.match(/coronavirus/gi)) {
+            response = covid[Math.floor(Math.random() * covid.length)];
+        } else if (text.match(/covid/gi)) {
+            response = covid[Math.floor(Math.random() * covid.length)];
+        } else {
+            response = alternative[Math.floor(Math.random() * alternative.length)];
+        }
     } else {
-        response = alternative[Math.floor(Math.random() * alternative.length)];
+        response = input
     }
+
 
     //update DOM
     addChat(input, response, voiceProps);

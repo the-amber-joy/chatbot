@@ -6,12 +6,14 @@ import output from "./convo.js"
 import sayStuff from "./sayStuff.js"
 
 const inputField = document.getElementById("input")
+const modeSelect = document.getElementById("modeSelect");
 const voiceSelect = document.getElementById("voiceSelect");
 const languageSelect = document.getElementById("languageSelect")
 
 const rateSelect = document.querySelector("form[name='rate']")
 const pitchSelect = document.querySelector("form[name='pitch']")
 let voiceOptions = {};
+let selectedMode = "chat"
 let selectedPitch = 1;
 let selectedRate = 1;
 let botName = "Alex";
@@ -39,8 +41,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 pitch: selectedPitch
             }
 
-            output(input, voiceProps);
+            output(input, voiceProps, selectedMode);
         }
+    });
+
+    modeSelect.addEventListener('change', function () {
+        selectedMode = this.value;
     });
 
     voiceSelect.addEventListener('change', function () {

@@ -62,10 +62,19 @@ span {
     display: grid;
     grid-gap: 1px;
     grid-template:
+        "mode mode input input"
         "language language input input"
         "voice voice output output"
         "rate rate output output"
         "pitch pitch output output";
+}
+
+.mode {
+    grid-area: mode;
+}
+
+#modeSelect {
+    width: 100%
 }
 
 .language {
@@ -74,6 +83,10 @@ span {
 
 .voice {
     grid-area: voice;
+}
+
+#voiceSelect {
+    width: 100%
 }
 
 .rate {
