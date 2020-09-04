@@ -29,7 +29,7 @@ span {
 
 #main {
     position: fixed;
-    top: 20%;
+    top: 5%;
     right: 200px;
     width: 400px;
     border: 0px solid #421;
@@ -62,6 +62,7 @@ span {
     display: grid;
     grid-gap: 1px;
     grid-template:
+        "botText botText botText botText"
         "mode mode input input"
         "language language input input"
         "voice voice output output"
@@ -75,6 +76,10 @@ span {
 
 #modeSelect {
     width: 100%
+}
+
+.botText {
+    grid-area: botText;
 }
 
 .language {

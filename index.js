@@ -69,6 +69,9 @@ document.addEventListener("DOMContentLoaded", () => {
         populateVoices(selectedLanguage).then(res => {
             voiceOptions = res.voiceOptions;
             selectedVoice = res.selectedVoice;
+            const isGoogle = selectedVoice.name.startsWith("Google");
+            botName = isGoogle ? "Chatbot" : selectedVoice.name;
+            document.getElementById("botName").innerHTML = botName;
             sayStuff({
                 voice: selectedVoice,
                 rate: selectedRate,
