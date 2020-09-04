@@ -52,7 +52,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     voiceSelect.addEventListener('change', function () {
         selectedVoice = voiceOptions[this.value];
-        botName = this.value;
+        const name = this.value
+        const isGoogle = name.startsWith("Google");
+
+        botName = isGoogle ? "Chatbot" : this.value;
         document.getElementById("botName").innerHTML = botName;
         sayStuff({
             voice: voiceOptions[this.value],

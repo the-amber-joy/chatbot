@@ -33,7 +33,7 @@ export default async function populateVoices(isoCode) {
             voiceOptions[name] = voices[i];
             const voiceOption = document.createElement("option");
             voiceOption.setAttribute("value", name);
-            voiceOption.text = isGoogle ? `${name} (Googlebot)` : name;
+            voiceOption.text = name;
             voiceSelect.appendChild(voiceOption);
         }
         return { voiceOptions, selectedVoice };

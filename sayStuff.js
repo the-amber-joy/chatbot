@@ -4,7 +4,7 @@ export default function sayStuff({ newProp, voice, rate = 1, pitch = 1, text }) 
     const name = voice.name
     const isGoogle = name.startsWith("Google");
     const intro = `Hello, my name is ${voice.name}`
-    const extra = isGoogle ? ", but you can call be Googlebot." : "."
+    const extra = isGoogle ? ", but you can call me Chatbot." : "."
 
     const speech = new SpeechSynthesisUtterance()
     speech.volume = 1;
