@@ -19,15 +19,23 @@ function compare(triggerArray, replyArray, string) {
 function addChat(input, response, voiceProps) {
     const { botName, voice, rate, pitch } = voiceProps;
     const userDiv = document.createElement("div");
+    const chatMode = input !== response;
 
-    userDiv.id = "user";
-    userDiv.innerHTML = `You: <span id="user-response">${input}</span>`;
-    outputDiv.insertBefore(userDiv, document.getElementById("bot"))
+    if (chatMode) {
+        userDiv.id = "user";
+        userDiv.innerHTML = `You: <span id="user-response">${input}</span>`;
+        outputDiv.insertBefore(userDiv, document.getElementById("bot"))
+    }
 
     const botDiv = document.createElement("div");
     botDiv.id = "bot";
     botDiv.innerHTML = `${botName}: <span id="bot-response">${response}</span>`;
-    outputDiv.insertBefore(botDiv, userDiv)
+
+    if (chatMode) {
+        outputDiv.insertBefore(botDiv, userDiv)
+    } else {
+        outputDiv.appendChild(botDiv)
+    }
 
     sayStuff({
         rate,
