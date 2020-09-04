@@ -22,6 +22,7 @@ let selectedVoice = null;
 
 
 (async () => {
+    document.getElementById("botName").innerHTML = botName;
     const languages = await getLanguages();
     const { langObjects } = filterLanguages(languages);
     const voices = await populateLanguages(langObjects);
@@ -52,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     voiceSelect.addEventListener('change', function () {
         selectedVoice = voiceOptions[this.value];
         botName = this.value;
+        document.getElementById("botName").innerHTML = botName;
         sayStuff({
             voice: voiceOptions[this.value],
             rate: selectedRate,

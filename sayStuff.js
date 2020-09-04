@@ -22,17 +22,10 @@ export default function sayStuff({ newProp, voice, rate = 1, pitch = 1, text }) 
             `Is my ${newProp} voice acceptable?`,
             `I hope you enjoy my ${newProp} voice.`
         ]
-        const addOns = [
-            "Do you like it?",
-            "Shall I keep it?",
-            "What do you think?",
-            "This is fun!"
-        ]
 
         const statement = textOptions[Math.floor(Math.random() * Math.floor(textOptions.length))];
-        const extra = addOns[Math.floor(Math.random() * Math.floor(addOns.length))];
 
-        speech.text = `${statement} ${extra}`;
+        speech.text = `${statement}`;
     } else {
         speech.text = intro + extra
     }
