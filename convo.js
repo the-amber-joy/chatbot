@@ -34,7 +34,8 @@ function addChat(input, response, voiceProps) {
     if (chatMode) {
         outputDiv.insertBefore(botDiv, userDiv)
     } else {
-        outputDiv.appendChild(botDiv)
+        const lastBotDiv = document.getElementById("bot")
+        outputDiv.insertBefore(botDiv, lastBotDiv)
     }
 
     sayStuff({
