@@ -108,4 +108,5 @@ span {
 
 .output {
     grid-area: output;
+    overflow-wrap: break-word;
 }
