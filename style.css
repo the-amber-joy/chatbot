@@ -67,7 +67,9 @@ span {
         "language language input input"
         "voice voice output output"
         "rate rate output output"
-        "pitch pitch output output";
+        "pitch pitch output output"
+        ". . output output"
+        ". . output output";
 }
 
 .mode {
