@@ -11,7 +11,7 @@ body {
 body::after {
     content: "";
     background-image: url("./bot.png");
-    background-repeat: repeat-y;
+    background-repeat: no-repeat;
     opacity: 0.5;
     top: 0;
     left: 0;
@@ -31,11 +31,9 @@ span {
 
 #main {
     position: fixed;
-    top: 5%;
-    right: 200px;
-    width: 400px;
-    border: 0px solid #421;
-    padding: 40px;
+    top: 5rem;
+    left: 35rem;
+    width: 30rem;
 }
 
 #main div {
