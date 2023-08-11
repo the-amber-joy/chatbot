@@ -4,8 +4,8 @@ body {
     font-size: 18px;
     font-family: "Courier New";
     background: rgb(200, 232, 241);
-    max-width: 1200px;
-    max-height: 800px;
+    max-width: 1280px;
+    max-height: 640px;
 }
 
 body::after {
