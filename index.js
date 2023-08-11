@@ -16,7 +16,7 @@ let voiceOptions = {};
 let selectedMode = "chat"
 let selectedPitch = 1;
 let selectedRate = 1;
-let botName = "Alex";
+let botName = "Chatbot";
 let isGoogle = false;
 let selectedVoice = null;
 
