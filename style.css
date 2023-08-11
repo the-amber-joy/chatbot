@@ -4,12 +4,14 @@ body {
     font-size: 18px;
     font-family: "Courier New";
     background: rgb(200, 232, 241);
+    max-width: 1200px;
+    max-height: 800px;
 }
 
 body::after {
     content: "";
     background-image: url("./bot.png");
-    background-repeat: repeat-y;
+    background-repeat: no-repeat;
     opacity: 0.5;
     top: 0;
     left: 0;
@@ -28,12 +30,10 @@ span {
 }
 
 #main {
-    position: fixed;
-    top: 5%;
-    right: 200px;
-    width: 400px;
-    border: 0px solid #421;
-    padding: 40px;
+    position: relative;
+    top: 5rem;
+    left: 45%;
+    width: 30rem;
 }
 
 #main div {
@@ -67,7 +67,9 @@ span {
         "language language input input"
         "voice voice output output"
         "rate rate output output"
-        "pitch pitch output output";
+        "pitch pitch output output"
+        ". . output output"
+        ". . output output";
 }
 
 .mode {
